@@ -40,30 +40,27 @@ class Service:
 
     def from_bibtex(self, bibtex: str) -> None:
         """Save bibtex reference to database."""
+        fields = ['author', 'title', 'booktitle', 'pages', 'year']
+        accepted_types = {'incollection': 1, 'book': 2}
         bibtex_db = bibtexparser.loads(bibtex)
         bibtex_dict = bibtex_db.entries_dict
         for reference in bibtex_dict.values():
-            if reference['ENTRYTYPE'] == 'incollection':
-                new = Reference(
-                    type_id=1,
-                    author=reference['author'],
-                    title=reference['title'],
-                    booktitle=reference['booktitle'],
-                    pages=reference['pages'],
-                    year=reference['year']
-                )
-            elif reference['ENTRYTYPE'] == 'book':
-                new = Reference(
-                    type_id=2,
-                    author=reference['author'],
-                    title=reference['title'],
-                    booktitle=reference['booktitle'],
-                    pages=reference['pages'],
-                    year=reference['year']
-                )
-            else:
-                continue
+            if reference['ENTRYTYPE'] not in accepted_types:
+                return
+            # Fill missing fields to avoid an error later
+            for field in fields:
+                if field not in reference:
+                    reference[field] = ''
 
+            new_type_id = accepted_types[reference['ENTRYTYPE']]
+            new = Reference(
+                type_id=new_type_id,
+                author=reference['author'],
+                title=reference['title'],
+                booktitle=reference['booktitle'],
+                pages=reference['pages'],
+                year=reference['year']
+            )
             self.database.session.add(new)
             self.database.session.commit()
 

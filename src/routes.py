@@ -11,11 +11,6 @@ service = Service(db)
 def index():
     """Page for viewing all references."""
     if request.method == 'GET':
-        service.from_bibtex(
-            '@Book{testi,author={Testiauhtor},'
-            'booktitle={Kirja},pages={1-2},'
-            'year={2022}}'
-        )
         references = service.get_all_references()
         return render_template(
             'check_references.html',
