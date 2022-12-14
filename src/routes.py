@@ -22,7 +22,8 @@ def index():
         if delete_id:  # Delete reference
             service.delete_reference(int(delete_id))
             return redirect('/')
-        elif request.form['action'] == 'download-all':  # Download all references
+        elif request.form['action'] == 'download-all':
+            # Download all references
             service.create_bibtex_file()
             return send_file('references.bib', as_attachment=True)
         else:  # Download selected references
