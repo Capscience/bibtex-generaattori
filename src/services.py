@@ -1,5 +1,4 @@
 """Module for database actions"""
-import sys
 import urllib.request
 from urllib.error import HTTPError
 import bibtexparser
@@ -102,8 +101,12 @@ class Service:
     def get_bibtex_from_doi(self, doi):
         """Module adapted from https://scipython.com/blog/doi-to-bibtex/"""
         base_url = 'http://dx.doi.org/'
+        # Allow user to input doi url or doi id
+        if not doi.startswith(base_url):
+            url = base_url + doi
+        else:
+            url = doi
 
-        url = base_url + doi
         req = urllib.request.Request(url)
         req.add_header('Accept', 'application/x-bibtex')
         try:

@@ -1,5 +1,5 @@
 """Bibtex conversion related unit tests."""
-from init import Reference, Type, app # pylint: disable=unused-import
+from init import Reference, Type, app  # pylint: disable=unused-import
 
 
 class TestReference:
