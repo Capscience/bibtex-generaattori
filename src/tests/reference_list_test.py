@@ -8,7 +8,7 @@ class TestReferenceList:
     """Tests for reference list functionality."""
     def setup_method(self):
         """Pytest setup method"""
-        self.services = Service(db) # pylint: disable=attribute-defined-outside-init
+        self.services = Service(db)  # pylint: disable=attribute-defined-outside-init
 
     def test_db_write_and_read(self):
         """Test adding a reference to the database and reading references."""
@@ -139,6 +139,18 @@ class TestReferenceList:
                     type_id=2
                 )
             ]
+
+
+    def test_import_from_doi(self):
+        """Check that doi import is saved to database correctly."""
+        with app.app_context():
+            doi = '10.1037/0000168-000'
+            self.services.get_bibtex_from_doi(doi)
+            ref = Reference.query.filter_by(author='Lynne M. Jackson').one()
+            title = ('The psychology of prejudice: '
+                     'From attitudes to social action (2nd ed.).')
+            assert ref.title == title
+            assert ref.year == 2020
 
 
 def teardown_module():

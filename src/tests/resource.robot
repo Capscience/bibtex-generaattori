@@ -8,6 +8,7 @@ ${BROWSER}  headlesschrome
 ${DELAY}  0.1 seconds
 ${HOME URL}  http://${SERVER}
 ${SEND URL}  http://${SERVER}/type
+${DOI URL}  http://${SERVER}/doi2bib
 
 *** Keywords ***
 Open And Configure Browser
@@ -20,6 +21,9 @@ Go To Main Page
 
 Go To Send Page
     Go To  ${SEND URL}
+
+Go To Doi Page
+    Go To  ${DOI URL}
 
 Main Page Should Be Open
     Title Should Be  Bibtex generaattori
@@ -43,6 +47,10 @@ Send Book Reference
     Input Text  name=pages  ${PAGES}
     Press Keys   xpath=//body  \ue00f
     Click Element  name:submit
+
+Send Doi
+    [Arguments]  ${DOI_ID}
+    Input Text  name=doinumber  ${DOI_ID}
 
 Delete Reference
     Click Button  name:delete
