@@ -76,6 +76,70 @@ class TestReferenceList:
             )
 
             assert bibtex_str == should_be
+    def test_db_edit_reference(self):
+        """Test editing reference already in the database"""
+        with app.app_context():
+            Reference.query.delete()
+            self.services.save_reference("Very Real", "Test Data", "2022")
+            self.services.edit_reference(1, "Edited Data", "This Too", "9001")
+            assert self.services.get_all_references() == [
+                Reference(
+                    id=1,
+                    author='Edited Data',
+                    title='This Too',
+                    year=9001,
+                    type_id=1
+                )
+            ]
+
+    def test_db_save_reference_book(self):
+        """Test for adding a book type reference to the database"""
+        with app.app_context():
+            Reference.query.delete()
+            self.services.save_reference_book("Au Thor",
+                                                "Tit Le",
+                                                "1732",
+                                                "Book Title",
+                                                "39")
+            assert self.services.get_all_references() == [
+                Reference(
+                    id=1,
+                    author="Au Thor",
+                    title="Tit Le",
+                    booktitle="Book Title",
+                    year=1732,
+                    pages=39,
+                    type_id=2
+                )
+            ]
+
+    def test_db_edit_reference_book(self):
+        """Test editing book type reference already in the database"""
+        with app.app_context():
+            Reference.query.delete()
+            self.services.save_reference_book("Au Thor",
+                                                 "Tit Le",
+                                                  "1732",
+                                                   "Book Title",
+                                                    "39")
+            self.services.edit_reference_book(1,
+                                                "Edited Data",
+                                                 "This Too",
+                                                  "3000",
+                                                   "Edited book title",
+                                                    "45")
+            assert self.services.get_all_references() == [
+                Reference(
+                    id=1,
+                    author='Edited Data',
+                    title='This Too',
+                    year=3000,
+                    booktitle="Edited book title",
+                    pages=45,
+                    type_id=2
+                )
+            ]
+
 
     def test_import_from_doi(self):
         """Check that doi import is saved to database correctly."""

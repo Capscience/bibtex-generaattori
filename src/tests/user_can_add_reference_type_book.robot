@@ -6,7 +6,7 @@ Suite Teardown  Close Browser
 *** Test Cases ***
 Go To Send Page And Send Book Reference
     Go To Send Page
-    Select From List By Value  name:type  book
+    Select From List By Value  name:type  Book
     Click Button  submit
     Send Book Reference  Charles Bukowski  Postitoimisto  Postitoimisto  1971  100-110
     Main Page Should Be Open

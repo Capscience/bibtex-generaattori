@@ -23,15 +23,15 @@ class Service:
 
     def save_reference_book(
         self, author: str, title: str, year: str, booktitle: str,
-        pagenumber: str
-    ):  # pylint: disable=too-many-arguments
+        pages: str
+    ): # pylint: disable=too-many-arguments
         """Save form data book type to database."""
         new = Reference(
             author=author,
             title=title,
             booktitle=booktitle,
             year=year,
-            pages=pagenumber,
+            pages=pages,
             type_id=2
         )
         self.database.session.add(new)  # pylint: disable=no-member
@@ -118,3 +118,27 @@ class Service:
                 print('DOI not found.')
             else:
                 print('Service unavailable.')
+
+    def get_reference_by_id(self, ref_id: int):
+        """Get specific reference from database"""
+        return Reference.query.filter_by(id=ref_id).one()
+
+    def edit_reference(self, ref_id: int, author: str, title: str, year: str):
+        """Edit inCollection type reference"""
+        reference_to_edit = Reference.query.filter_by(id=ref_id).one()
+        reference_to_edit.author = author
+        reference_to_edit.title = title
+        reference_to_edit.year = year
+        self.database.session.commit()# pylint: disable=no-member
+
+    def edit_reference_book(self, ref_id: int, author: str, title: str,
+        year: str, booktitle: str, pages: str
+    ): # pylint: disable=too-many-arguments
+        """Edit book type reference"""
+        reference_to_edit = Reference.query.filter_by(id=ref_id).one()
+        reference_to_edit.author = author
+        reference_to_edit.title = title
+        reference_to_edit.year = year
+        reference_to_edit.booktitle = booktitle
+        reference_to_edit.pages = pages
+        self.database.session.commit()# pylint: disable=no-member

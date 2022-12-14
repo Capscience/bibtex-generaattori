@@ -2,9 +2,9 @@
 {% block content %}
 <title>Tallenna viite</title>
 <h1>Tallenna viite</h1>
-{% if ref_type == "inCollection" %}
+{% if ref_type == "InCollection" %}
 <form action='/edit/<ref_type>' method="POST">
-  <input type="hidden" name="ref_type" value="inCollection">
+  <input type="hidden" name="ref_type" value="InCollection">
   <div class="mb-3">
     <label for="author">Author:</label>
     <input type="text" class="form-control" name="author" placeholder="Author">
@@ -20,9 +20,9 @@
   <button type="submit" name="submit" class="btn btn-primary">Submit</button>
 </form>
 
-{% elif ref_type == "book" %}
+{% elif ref_type == "Book" %}
 <form action='/edit/<ref_type>' method="POST">
-  <input type="hidden" name="ref_type" value="book">
+  <input type="hidden" name="ref_type" value="Book">
   <div class="mb-3">
     <label for="author">Author:</label>
     <input type="text" class="form-control" name="author" placeholder="Author">
@@ -40,8 +40,8 @@
     <input type="number" class="form-control" name="year" placeholder="Year">
     </div>
   <div class="mb-3">
-    <label for="pagenumber">Page numbers:</label>
-    <input type='tel' pattern="[0-9\-]+" class="form-control" name="pagenumber" placeholder="Page number">
+    <label for="pages">Pages:</label>
+    <input type='tel' pattern="[0-9\-]+" class="form-control" name="pages" placeholder="Pages">
   </div>
   <button type="submit" name="submit" class="btn btn-primary">Submit</button>
 </form>
