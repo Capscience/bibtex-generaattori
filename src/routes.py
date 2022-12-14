@@ -3,12 +3,19 @@ from flask import render_template, request, redirect, send_file, Response
 from init import app, db
 from services import Service
 
+
 service = Service(db)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     """Page for viewing all references."""
     if request.method == 'GET':
+        service.from_bibtex(
+            '@Book{testi,author={Testiauhtor},'
+            'booktitle={Kirja},pages={1-2},'
+            'year={2022}}'
+        )
         references = service.get_all_references()
         return render_template(
             'check_references.html',
@@ -17,13 +24,13 @@ def index():
         )
     else:
         delete_id = request.form.get('confirm-delete')
-        if delete_id: # Delete reference
+        if delete_id:  # Delete reference
             service.delete_reference(int(delete_id))
             return redirect('/')
-        elif request.form['action'] == 'download-all': # Download all references
+        elif request.form['action'] == 'download-all':  # Download all references
             service.create_bibtex_file()
             return send_file('references.bib', as_attachment=True)
-        else: # Download selected references
+        else:  # Download selected references
             selected = set(request.form.getlist('selected-ref'))
             bibtex_str = service.create_bibtex_str_from_selected(selected)
             return Response(
@@ -34,6 +41,7 @@ def index():
                 }
             )
 
+
 @app.route('/type', methods=['GET', 'POST'])
 def choose_reference_type():
     """Page for choosing reference type."""
@@ -42,6 +50,7 @@ def choose_reference_type():
     else:
         ref_type = request.form['type']
         return redirect(f'/edit/{ref_type}')
+
 
 @app.route('/edit/<ref_type>', methods=['GET', 'POST'])
 def send_reference(ref_type: str):
@@ -67,6 +76,7 @@ def send_reference(ref_type: str):
             )
     return redirect('/')
 
+
 @app.route('/doi2bib', methods=['GET', 'POST'])
 def doi2bib():
     """Get reference info from Doi-number"""
@@ -74,7 +84,5 @@ def doi2bib():
         return render_template('doi.html')
     else:
         doi_number = request.form['doinumber']
-        reference = service.get_bibtex_from_doi(doi_number)
-        print(reference)
-        #Do something with reference
+        service.get_bibtex_from_doi(doi_number)
         return redirect('/')

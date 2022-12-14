@@ -2,7 +2,9 @@
 import sys
 import urllib.request
 from urllib.error import HTTPError
+import bibtexparser
 from init import Reference
+
 
 class Service:
     """Class for database actions"""
@@ -23,7 +25,7 @@ class Service:
     def save_reference_book(
         self, author: str, title: str, year: str, booktitle: str,
         pagenumber: str
-    ): # pylint: disable=too-many-arguments
+    ):  # pylint: disable=too-many-arguments
         """Save form data book type to database."""
         new = Reference(
             author=author,
@@ -36,11 +38,42 @@ class Service:
         self.database.session.add(new)  # pylint: disable=no-member
         self.database.session.commit()  # pylint: disable=no-member
 
-    def get_all_references(self):
+    def from_bibtex(self, bibtex: str) -> None:
+        """Save bibtex reference to database."""
+        bibtex_db = bibtexparser.loads(bibtex)
+        bibtex_dict = bibtex_db.entries_dict
+        for reference in bibtex_dict.values():
+            if reference['ENTRYTYPE'] == 'incollection':
+                new = Reference(
+                    type_id=1,
+                    author=reference['author'],
+                    title=reference['title'],
+                    booktitle=reference['booktitle'],
+                    pages=reference['pages'],
+                    year=reference['year']
+                )
+            elif reference['ENTRYTYPE'] == 'book':
+                new = Reference(
+                    type_id=2,
+                    author=reference['author'],
+                    title=reference['title'],
+                    booktitle=reference['booktitle'],
+                    pages=reference['pages'],
+                    year=reference['year']
+                )
+            else:
+                continue
+
+            self.database.session.add(new)
+            self.database.session.commit()
+
+    @staticmethod
+    def get_all_references():
         """Get references from database"""
         return Reference.query.all()
 
-    def create_bibtex_file(self) -> None:
+    @staticmethod
+    def create_bibtex_file() -> None:
         """Create bibtex file for upload."""
         references = Reference.query.all()
         text = ''
@@ -49,7 +82,7 @@ class Service:
             if i != len(references) - 1:
                 text += '\n\n'
 
-        with open('references.bib','w', encoding='utf-8') as file:
+        with open('references.bib', 'w', encoding='utf-8') as file:
             file.write(text)
 
     def create_bibtex_str_from_selected(self, selected: set) -> str:
@@ -66,11 +99,11 @@ class Service:
     def delete_reference(self, ref_id: int):
         """Remove reference from database"""
         reference = Reference.query.filter_by(id=ref_id).one()
-        self.database.session.delete(reference) # pylint: disable=no-member
-        self.database.session.commit() # pylint: disable=no-member
+        self.database.session.delete(reference)  # pylint: disable=no-member
+        self.database.session.commit()  # pylint: disable=no-member
 
     def get_bibtex_from_doi(self, doi):
-        """Module from https://scipython.com/blog/doi-to-bibtex/"""
+        """Module adapted from https://scipython.com/blog/doi-to-bibtex/"""
         base_url = 'http://dx.doi.org/'
 
         url = base_url + doi
@@ -79,10 +112,9 @@ class Service:
         try:
             with urllib.request.urlopen(req) as reader:
                 bibtex = reader.read().decode()
-            return bibtex
+            self.from_bibtex(bibtex)
         except HTTPError as error:
             if error.code == 404:
                 print('DOI not found.')
             else:
                 print('Service unavailable.')
-            sys.exit(1)
