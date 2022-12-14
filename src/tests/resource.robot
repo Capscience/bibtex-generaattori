@@ -27,7 +27,7 @@ Main Page Should Be Open
 Send Page Should Be Open
     Title Should Be  Tallenna viite
 
-Send inCollection Reference
+Send InCollection Reference
     [Arguments]  ${AUTHOR}  ${TITLE}  ${YEAR}
     Input Text  name=author  ${AUTHOR}
     Input Text  name=title  ${TITLE}
@@ -35,12 +35,12 @@ Send inCollection Reference
     Click Button  submit
 
 Send Book Reference
-    [Arguments]  ${AUTHOR}  ${TITLE}  ${BOOK_TITLE}  ${YEAR}  ${PAGENUMBER}
+    [Arguments]  ${AUTHOR}  ${TITLE}  ${BOOK_TITLE}  ${YEAR}  ${PAGES}
     Input Text  name=author  ${AUTHOR}
     Input Text  name=title  ${TITLE}
     Input Text  name=booktitle  ${BOOK_TITLE}
     Input Text  name=year  ${YEAR}
-    Input Text  name=pagenumber  ${PAGENUMBER}
+    Input Text  name=pages  ${PAGES}
     Press Keys   xpath=//body  \ue00f
     Click Element  name:submit
 
