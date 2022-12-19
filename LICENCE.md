@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 Henri Immonen
+Copyright (c) 2022 Susanna Kinnunen, Roni Hokkanen, Olavi Pakola, Simo Soini & Henri Immonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
