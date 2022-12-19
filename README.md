@@ -8,7 +8,7 @@
 - [Linkki sovellukseen](https://ohtu.capscience.fi/) 
 - [Product backlog](https://docs.google.com/spreadsheets/d/1iF_o2BonsYtQlAYNAM78CDaxmr6lO7b8xHMP3yNJEwg/edit#gid=1)  
 - [Github actions](https://github.com/henriimmonen/bibtex-generaattori/actions)  
-- [Licence](https://github.com/henriimmonen/bibtex-generaattori/blob/main/LICENCE.md)
+- [Lisenssi](https://github.com/henriimmonen/bibtex-generaattori/blob/main/LICENCE.md)
 
 ## Definition of done
 
