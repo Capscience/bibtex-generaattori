@@ -9,6 +9,7 @@
 - [Product backlog](https://docs.google.com/spreadsheets/d/1iF_o2BonsYtQlAYNAM78CDaxmr6lO7b8xHMP3yNJEwg/edit#gid=1)  
 - [Github actions](https://github.com/henriimmonen/bibtex-generaattori/actions)  
 - [Lisenssi](https://github.com/henriimmonen/bibtex-generaattori/blob/main/LICENCE.md)
+- [Loppuraportti](https://github.com/henriimmonen/bibtex-generaattori/blob/main/documentation/loppuraportti.md)
 
 ## Definition of done
 
